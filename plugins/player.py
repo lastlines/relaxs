@@ -112,7 +112,7 @@ async def yplay(_, message: Message):
         playlist.append(data)
         if len(playlist) == 1:
             m_status = await message.reply_text(
-                f"🔄 **Music Sedang Diproses**..."
+                f"🎵 **Music Sedang Diproses**..."
             )
             await mp.download_audio(playlist[0])
             if 1 in RADIO:
@@ -141,10 +141,10 @@ async def yplay(_, message: Message):
             await m_status.delete()
             print(f"- START PLAYING: {playlist[0][1]}")
         if not playlist:
-            pl = f"{emoji.NO_ENTRY} **Tidak Ada Playlist!**"
+            pl = f"❌ **Tidak Ada Playlist!**"
         else:   
             pl = f"📋 **Daftar Playlist** :\n\n" + "\n".join([
-                f"**{i}**. \n👤 **Request Dari:** {x[4]}"
+                f"**{x[1]}**\n 👤 **Request Dari :** {x[4]}"
                 for i, x in enumerate(playlist)
                 ])
         if EDIT_TITLE:
@@ -162,11 +162,11 @@ async def yplay(_, message: Message):
 
     if type=="youtube" or type=="query":
         if type=="youtube":
-            msg = await message.reply_text("🔍 **Mencari...**")
+            msg = await message.reply_text("🔄 **Mencari...**")
             url=yturl
         elif type=="query":
             try:
-                msg = await message.reply_text("🔍 **Mencari...**")
+                msg = await message.reply_text("🔄 **Mencari...**")
                 ytquery=ysearch
                 results = YoutubeSearch(ytquery, max_results=1).to_dict()
                 url = f"https://youtube.com{results[0]['url_suffix']}"
@@ -210,7 +210,7 @@ async def yplay(_, message: Message):
         client = group_call.client
         if len(playlist) == 1:
             m_status = await msg.edit(
-                f"🔄 **Music Sedang Diproses**..."
+                f"🎵 **Music Sedang Diproses**..."
             )
             await mp.download_audio(playlist[0])
             if 1 in RADIO:
@@ -244,7 +244,7 @@ async def yplay(_, message: Message):
             pl = f"❌ **Tidak Ada Playlist!**"
         else:
             pl = f"📋 **Daftar Playlist** :\n" + "\n\n".join([
-                f"**{i}**. \n👤 **Request Dari:** {x[4]}"
+                f"**{x[1]}** \n👤 **Request Dari :** {x[4]}"
                 for i, x in enumerate(playlist)
                 ])
         if EDIT_TITLE:
@@ -270,7 +270,7 @@ async def current(_, m: Message):
         return
     else:
         pl = f"📋 **Daftar Playlist** :\n" + "\n\n".join([
-            f"**{i}**. \n👤 **Request Dari:** {x[4]}"
+            f"**{x[1]}** \n👤 **Request Dari:** {x[4]}"
             for i, x in enumerate(playlist)
             ])
     if m.chat.type == "private":
@@ -343,7 +343,7 @@ async def skip_track(_, m: Message):
             pl = f"❌ **Tidak Ada Playlist!**"
         else:
             pl = f"📋 **Daftar Playlist** :\n" + "\n\n".join([
-            f"**{i}**. \n👤 **Request Dari:** {x[4]}"
+            f"**{x[1]}** \n👤 **Request Dari :** {x[4]}"
             for i, x in enumerate(playlist)
             ])
         if m.chat.type == "private":
@@ -363,16 +363,16 @@ async def skip_track(_, m: Message):
                 if 2 <= i <= (len(playlist) - 1):
                     audio = f"{playlist[i][1]}"
                     playlist.pop(i)
-                    text.append(f"{emoji.WASTEBASKET} **Succesfully Skipped** - {i}. **{audio}**")
+                    text.append(f"⏩ **Succesfully Skipped** - {i}. **{audio}**")
                 else:
-                    text.append(f"{emoji.CROSS_MARK} **Can't Skip First Two Song** - {i}")
+                    text.append(f"⏩ **Can't Skip First Two Song** - {i}")
             k=await m.reply_text("\n".join(text))
             await mp.delete(k)
             if not playlist:
                 pl = f"❌ **Tidak Ada Playlist!**"
             else:
                 pl = f"📋 **Daftar Playlist** :\n" + "\n\n".join([
-                f"**{i}**. \n👤 **Request Dari:** {x[4]}"
+                f"**{x[1]}** \n👤 **Request Dari :** {x[4]}"
                 for i, x in enumerate(playlist)
                 ])
             if m.chat.type == "private":
@@ -455,7 +455,7 @@ async def restart_playing(_, m: Message):
         return
     group_call.restart_playout()
     k=await m.reply_text(
-        f"{emoji.COUNTERCLOCKWISE_ARROWS_BUTTON}  "
+        f"🎵 "
         "**Memulai Ulang Lagu!**"
     )
     await mp.delete(k)
@@ -505,7 +505,7 @@ async def clean_raw_pcm(client, m: Message):
             if fn.endswith(".raw"):
                 count += 1
                 os.remove(os.path.join(download_dir, fn))
-    k=await m.reply_text(f"{emoji.WASTEBASKET} **Cleaned {count} Files!**")
+    k=await m.reply_text(f"⚠️ **Cleaned {count} Files!**")
     await mp.delete(k)
     await mp.delete(m)
 
@@ -545,7 +545,7 @@ async def show_playlist(_, m: Message):
         return
     else:
         pl = f"📋 **Daftar Playlist** :\n" + "\n\n".join([
-                f"**{i}**. \n👤 **Request Dari:** {x[4]}"
+                f"**{x[1]}** \n👤 **Request Dari :** {x[4]}"
                 for i, x in enumerate(playlist)
                 ])
     if m.chat.type == "private":
@@ -554,27 +554,4 @@ async def show_playlist(_, m: Message):
         if msg.get('playlist') is not None:
             await msg['playlist'].delete()
         msg['playlist'] = await m.reply_text(pl)
-    await mp.delete(m)
-
-admincmds=["join", "unmute", "mute", "leave", "clean", "pause", "resume", "stop", "skip", "radio", "stopradio", "replay", "restart", "volume", f"volume@{USERNAME}", f"join@{USERNAME}", f"unmute@{USERNAME}", f"mute@{USERNAME}", f"leave@{USERNAME}", f"clean@{USERNAME}", f"pause@{USERNAME}", f"resume@{USERNAME}", f"stop@{USERNAME}", f"skip@{USERNAME}", f"radio@{USERNAME}", f"stopradio@{USERNAME}", f"replay@{USERNAME}", f"restart@{USERNAME}"]
-
-@Client.on_message(filters.command(admincmds) & ~ADMINS_FILTER & (filters.chat(CHAT) | filters.private))
-async def notforu(_, m: Message):
-    k=await m.reply_sticker("CAACAgUAAxkBAAEBpyZhF4R-ZbS5HUrOxI_MSQ10hQt65QACcAMAApOsoVSPUT5eqj5H0h4E")
-    await mp.delete(k)
-    await mp.delete(m)
-
-allcmd = ["play", "current", "playlist", "song", f"song@{USERNAME}", f"play@{USERNAME}", f"current@{USERNAME}", f"playlist@{USERNAME}"] + admincmds
-
-@Client.on_message(filters.command(allcmd) & filters.group & ~filters.chat(CHAT))
-async def not_chat(_, m: Message):
-    buttons = [
-                [
-                [   InlineKeyboardButton("☕ ᴜᴘᴅᴀᴛᴇ", url="https://t.me/robotprojectx"),
-                    InlineKeyboardButton("ᴏᴡɴᴇʀ ☕", url="https://t.me/justthetech"),
-                ],
-                    [InlineKeyboardButton(text="❌", callback_data="cls")],
-                ]
-         ]
-    k=await m.reply_photo(photo="https://telegra.ph/file/4e839766d45935998e9c6.jpg", caption="**Sorry, You Can't Use This Bot In This Group! 🤷‍♂️ But You Can Make Your Own Bot Like This From The [Source Code](https://github.com/AsmSafone/RadioPlayerV3) Below 😉!**", reply_markup=InlineKeyboardMarkup(buttons))
     await mp.delete(m)
