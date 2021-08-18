@@ -37,7 +37,6 @@ useer ="NaN"
 
 msg=Config.msg
 playlist=Config.playlist
-CHAT=Config.CHAT
 ADMINS=Config.ADMINS
 LOG_GROUP=Config.LOG_GROUP
 RADIO_TITLE=Config.RADIO_TITLE
