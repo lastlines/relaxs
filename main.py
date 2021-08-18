@@ -29,7 +29,6 @@ from pyrogram.raw import functions, types
 
 from pyrogram.types import Message
 ADMINS=Config.ADMINS
-chid = message.chat.id
 
 bot = Client(
     "RadioPlayer",
@@ -140,8 +139,9 @@ bot.send(
     )
 )
 
-@bot.on_message(filters.command(["restart", f"restart@{USERNAME}"]) & filters.user(ADMINS) & (filters.chat(chid) | filters.private))
+@bot.on_message(command(["restart", f"restart@{USERNAME}"]) & other_filters)
 async def restart(client, message):
+    chid = message.chat.id
     k=await message.reply_text("🔄 **Checking Updates ...**")
     await asyncio.sleep(3)
     await k.edit("🔄 **Updating, Please Wait...**")
