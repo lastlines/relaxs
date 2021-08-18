@@ -23,7 +23,6 @@ from config import Config
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
 msg=Config.msg
-CHAT=Config.CHAT
 ADMINS=Config.ADMINS
 playlist=Config.playlist
 
