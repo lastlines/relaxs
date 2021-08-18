@@ -29,6 +29,8 @@ from utils import mp, RADIO, USERNAME, FFMPEG_PROCESSES
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from youtube_search import YoutubeSearch
 
+from helpers.filters import command, other_filters
+
 
 msg=Config.msg
 playlist=Config.playlist
@@ -52,11 +54,11 @@ async def is_admin(_, client, message: Message):
 ADMINS_FILTER = filters.create(is_admin)
 
 
-
-@Client.on_message(filters.command(["play", f"play@{USERNAME}"]) & (filters.chat(CHAT) | filters.private) | filters.audio & filters.private)
+@Client.on_message(command(["play", f"play@{USERNAME}"]) & other_filters)
 async def yplay(_, message: Message):
+    chid = message.chat.id
     if ADMIN_ONLY == "True":
-        admins = await mp.get_admins(CHAT)
+        admins = await mp.get_admins(chid)
         if message.from_user.id not in admins:
             m=await message.reply_text("**Kamu Tidak Diizinkan!**")
             await mp.delete(m)
@@ -120,7 +122,7 @@ async def yplay(_, message: Message):
                     group_call.input_filename = ''
                     RADIO.remove(1)
                     RADIO.add(0)
-                process = FFMPEG_PROCESSES.get(CHAT)
+                process = FFMPEG_PROCESSES.get(chid)
                 if process:
                     try:
                         process.send_signal(SIGINT)
@@ -129,7 +131,7 @@ async def yplay(_, message: Message):
                     except Exception as e:
                         print(e)
                         pass
-                    FFMPEG_PROCESSES[CHAT] = ""
+                    FFMPEG_PROCESSES[chid] = ""
             if not group_call.is_connected:
                 await mp.start_call()
             file=playlist[0][1]
@@ -218,7 +220,7 @@ async def yplay(_, message: Message):
                     group_call.input_filename = ''
                     RADIO.remove(1)
                     RADIO.add(0)
-                process = FFMPEG_PROCESSES.get(CHAT)
+                process = FFMPEG_PROCESSES.get(chid)
                 if process:
                     try:
                         process.send_signal(SIGINT)
@@ -227,7 +229,7 @@ async def yplay(_, message: Message):
                     except Exception as e:
                         print(e)
                         pass
-                    FFMPEG_PROCESSES[CHAT] = ""
+                    FFMPEG_PROCESSES[chid] = ""
             if not group_call.is_connected:
                 await mp.start_call()
             file=playlist[0][1]
