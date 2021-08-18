@@ -27,6 +27,7 @@ from config import Config
 from utils import mp, USERNAME, FFMPEG_PROCESSES
 from pyrogram.raw import functions, types
 
+from pyrogram.types import Message
 ADMINS=Config.ADMINS
 chid = message.chat.id
 
