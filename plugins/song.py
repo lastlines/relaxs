@@ -28,7 +28,8 @@ from config import Config
 from utils import USERNAME, mp
 from youtube_search import YoutubeSearch
 
-CHAT=Config.CHAT
+
+from helpers.filters import command, other_filters
 
 ## Extra Fns -------------------------------
 
@@ -40,7 +41,7 @@ def time_to_seconds(time):
 
 ## Commands --------------------------------
 
-@Client.on_message(filters.command(["song", f"song@{USERNAME}"]) & (filters.chat(CHAT) | filters.private))
+@Client.on_message(command(["song", f"song@{USERNAME}"]) & other_filters)
 async def song(client, message):
     query = ''
     for i in message.command[1:]:
