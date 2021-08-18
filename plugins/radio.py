@@ -23,9 +23,7 @@ from config import Config, STREAM
 
 from helpers.filters import command, other_filters
 
-CHAT=Config.CHAT
 ADMINS=Config.ADMINS
-
 
 @Client.on_message(command(["radio", f"radio@{USERNAME}"]) & other_filters)
 async def radio(client, message: Message):
@@ -39,7 +37,7 @@ async def radio(client, message: Message):
     await mp.delete(k)
     await mp.delete(message)
 
-@Client.on_message(filters.command(["stopradio", f"stopradio@{USERNAME}"]) & filters.user(ADMINS) & (filters.chat(CHAT) | filters.private))
+@Client.on_message(command(["stopradio", f"stopradio@{USERNAME}"]) & other_filters)
 async def stop(_, message: Message):
     if 0 in RADIO:
         k=await message.reply_text(f"⚠️ **Please Start A Live Stream First!**")
