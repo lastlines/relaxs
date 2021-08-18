@@ -77,6 +77,7 @@ ydl_opts = {
 ydl = YoutubeDL(ydl_opts)
 
 
+
 class MusicPlayer(object):
     def __init__(self):
         self.group_call = GroupCallFactory(USER, GroupCallFactory.MTPROTO_CLIENT_TYPE.PYROGRAM).get_file_group_call()
@@ -176,10 +177,9 @@ class MusicPlayer(object):
 
     async def start_radio(self):
         group_call = self.group_call
-        chid = message.chat.id
         if group_call.is_connected:
             playlist.clear()   
-        process = FFMPEG_PROCESSES.get(chid)
+        process = FFMPEG_PROCESSES.get(chat_id)
         if process:
             try:
                 process.send_signal(SIGINT)
@@ -188,7 +188,7 @@ class MusicPlayer(object):
             except Exception as e:
                 print(e)
                 pass
-            FFMPEG_PROCESSES[chid] = ""
+            FFMPEG_PROCESSES[chat_id] = ""
         station_stream_url = STREAM_URL
         try:
             RADIO.remove(0)
@@ -198,12 +198,12 @@ class MusicPlayer(object):
             RADIO.add(1)
         except:
             pass
-        if os.path.exists(f'radio-{chid}.raw'):
-            os.remove(f'radio-{chid}.raw')
+        if os.path.exists(f'radio-{chat_id}.raw'):
+            os.remove(f'radio-{chat_id}.raw')
         # credits: https://t.me/c/1480232458/6825
-        os.mkfifo(f'radio-{chid}.raw')
-        group_call.input_filename = f'radio-{chid}.raw'
-        if not CALL_STATUS.get(chid):
+        os.mkfifo(f'radio-{chat_id}.raw')
+        group_call.input_filename = f'radio-{chat_id}.raw'
+        if not CALL_STATUS.get(chat_id):
             await self.start_call()
         ffmpeg_log = open("ffmpeg.log", "w+")
         command=["ffmpeg", "-y", "-i", station_stream_url, "-f", "s16le", "-ac", "2",
@@ -217,13 +217,13 @@ class MusicPlayer(object):
             )
 
         chid = message.chat.id
-        FFMPEG_PROCESSES[chid] = process
+        FFMPEG_PROCESSES[chat_id] = process
         if RADIO_TITLE:
             await self.edit_title()
         await sleep(2)
         while True:
             await sleep(10)
-            if CALL_STATUS.get(chid):
+            if CALL_STATUS.get(chat_id):
                 print("Succesfully Joined VC !")
                 break
             else:
@@ -246,7 +246,7 @@ class MusicPlayer(object):
             except:
                 pass
         chid = message.chat.id
-        process = FFMPEG_PROCESSES.get(chid)
+        process = FFMPEG_PROCESSES.get(chat_id)
         if process:
             try:
                 process.send_signal(SIGINT)
@@ -262,14 +262,14 @@ class MusicPlayer(object):
         group_call = self.group_call
         chid = message.chat.id
         try:
-            await group_call.start(chid)
+            await group_call.start(chat_id)
         except RuntimeError:
             await USER.send(CreateGroupCall(
-                peer=(await USER.resolve_peer(chid)),
+                peer=(await USER.resolve_peer(chat_id)),
                 random_id=randint(10000, 999999999)
                 )
                 )
-            await group_call.start(chid)
+            await group_call.start(chat_id)
         except Exception as e:
             print(e)
             pass
