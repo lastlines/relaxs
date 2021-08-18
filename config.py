@@ -18,6 +18,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 import os
 import re
+
+from os import getenv
+
 from youtube_dl import YoutubeDL
 
 from dotenv import load_dotenv
@@ -72,6 +75,7 @@ class Config:
     API_HASH = os.environ.get("API_HASH", "")
     BOT_TOKEN = os.environ.get("BOT_TOKEN", "") 
     SESSION = os.environ.get("SESSION_STRING", "")
+    COMMAND_PREFIXES = list(getenv("COMMAND_PREFIXES", "/ !").split())
     playlist=[]
     msg = {}
 
