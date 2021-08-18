@@ -11,4 +11,4 @@ wget
 aiohttp
 requests
 python-dotenv
-
+typing
