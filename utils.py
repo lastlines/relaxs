@@ -36,6 +36,8 @@ from pyrogram.raw.functions.phone import EditGroupCallTitle, CreateGroupCall
 from random import randint
 
 
+from pyrogram.types import Message
+
 bot = Client(
     "RadioPlayerVC",
     Config.API_ID,
