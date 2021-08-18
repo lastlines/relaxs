@@ -21,11 +21,13 @@ from pyrogram.types import Message
 from utils import mp, RADIO, USERNAME
 from config import Config, STREAM
 
+from helpers.filters import command, other_filters
+
 CHAT=Config.CHAT
 ADMINS=Config.ADMINS
 
 
-@Client.on_message(filters.command(["radio", f"radio@{USERNAME}"]) & filters.user(ADMINS) & (filters.chat(CHAT) | filters.private))
+@Client.on_message(command(["radio", f"radio@{USERNAME}"]) & other_filters)
 async def radio(client, message: Message):
     if 1 in RADIO:
         k=await message.reply_text(f"⚠️ **Please Stop Existing Live Stream!**")
