@@ -54,7 +54,6 @@ class Config:
     ADMIN = os.environ.get("ADMINS", "")
     ADMINS = [int(admin) if re.search('^\d+$', admin) else admin for admin in (ADMIN).split()]
     API_ID = int(os.environ.get("API_ID", ""))
-    CHAT = int(os.environ.get("CHAT", None))
     LOG_GROUP=os.environ.get("LOG_GROUP", None)
     STREAM_URL=finalurl
     ADMIN_ONLY=os.environ.get("ADMIN_ONLY", "False")
