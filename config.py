@@ -38,6 +38,9 @@ finalurl=""
 STREAM=os.environ.get("STREAM_URL", "http://peridot.streamguys.com:7150/Mirchi")
 regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
 match = re.match(regex,STREAM)
+
+COMMAND_PREFIXES = list(getenv("COMMAND_PREFIXES", "/ !").split())
+
 if match:
     meta = ydl.extract_info(STREAM, download=False)
     formats = meta.get('formats', [meta])
@@ -71,7 +74,6 @@ class Config:
     API_HASH = os.environ.get("API_HASH", "")
     BOT_TOKEN = os.environ.get("BOT_TOKEN", "") 
     SESSION = os.environ.get("SESSION_STRING", "")
-    COMMAND_PREFIXES = list(getenv("COMMAND_PREFIXES", "/ !").split())
     playlist=[]
     msg = {}
 
