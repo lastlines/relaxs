@@ -260,7 +260,6 @@ class MusicPlayer(object):
 
     async def start_call(self):
         group_call = self.group_call
-        chid = message.chat.id
         try:
             await group_call.start(chat_id)
         except RuntimeError:
