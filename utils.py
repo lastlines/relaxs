@@ -216,7 +216,7 @@ class MusicPlayer(object):
             stderr=asyncio.subprocess.STDOUT,
             )
 
-        chid = message.chat.id
+     
         FFMPEG_PROCESSES[chat_id] = process
         if RADIO_TITLE:
             await self.edit_title()
@@ -245,7 +245,6 @@ class MusicPlayer(object):
                 RADIO.add(0)
             except:
                 pass
-        chid = message.chat.id
         process = FFMPEG_PROCESSES.get(chat_id)
         if process:
             try:
