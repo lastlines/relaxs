@@ -27,8 +27,8 @@ from config import Config
 from utils import mp, USERNAME, FFMPEG_PROCESSES
 from pyrogram.raw import functions, types
 
-CHAT=Config.CHAT
 ADMINS=Config.ADMINS
+chid = message.chat.id
 
 bot = Client(
     "RadioPlayer",
@@ -139,7 +139,7 @@ bot.send(
     )
 )
 
-@bot.on_message(filters.command(["restart", f"restart@{USERNAME}"]) & filters.user(ADMINS) & (filters.chat(CHAT) | filters.private))
+@bot.on_message(filters.command(["restart", f"restart@{USERNAME}"]) & filters.user(ADMINS) & (filters.chat(chid) | filters.private))
 async def restart(client, message):
     k=await message.reply_text("🔄 **Checking Updates ...**")
     await asyncio.sleep(3)
@@ -152,7 +152,7 @@ async def restart(client, message):
         await message.delete()
     except:
         pass
-    process = FFMPEG_PROCESSES.get(CHAT)
+    process = FFMPEG_PROCESSES.get(chid)
     if process:
         try:
             process.send_signal(SIGINT)
@@ -161,7 +161,7 @@ async def restart(client, message):
         except Exception as e:
             print(e)
             pass
-        FFMPEG_PROCESSES[CHAT] = ""
+        FFMPEG_PROCESSES[chid] = ""
     Thread(
         target=stop_and_restart
         ).start()    
