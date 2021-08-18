@@ -31,6 +31,9 @@ from youtube_search import YoutubeSearch
 
 from helpers.filters import command, other_filters
 
+chat_id = None
+DISABLED_GROUPS = []
+useer ="NaN"
 
 msg=Config.msg
 playlist=Config.playlist
