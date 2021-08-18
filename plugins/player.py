@@ -264,8 +264,7 @@ async def yplay(_, message: Message):
             await mp.download_audio(track)
     await mp.delete(message)
 
-
-@Client.on_message(filters.command(["current", f"current@{USERNAME}"]) & (filters.chat(CHAT) | filters.private))
+@Client.on_message(command(["current", f"current@{USERNAME}"]) & other_filters)
 async def current(_, m: Message):
     if not playlist:
         k=await m.reply_text(f"❌ **Tidak Ada Music!**")
